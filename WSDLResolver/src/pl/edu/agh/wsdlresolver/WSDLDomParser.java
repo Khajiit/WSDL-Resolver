@@ -27,9 +27,9 @@ public class WSDLDomParser{
             int totalOperations = listOfOperations.getLength();
             System.out.println("Total no of operations : " + listOfOperations.getLength());
             System.out.println("WebMethods:");
-
+            //moj test
             for(int s=0; s<listOfOperations.getLength() ; s++){
-
+            	
 
                 Node operationNode = listOfOperations.item(s);
                 if(operationNode.getNodeType() == Node.ELEMENT_NODE){
