@@ -27,18 +27,24 @@ public class WSDLDomParser{
             int totalOperations = listOfOperations.getLength();
             System.out.println("Total no of operations : " + listOfOperations.getLength());
             System.out.println("WebMethods:");
-            //moj test
             for(int s=0; s<listOfOperations.getLength() ; s++){
-            	
 
-                Node operationNode = listOfOperations.item(s);
+            	Node operationNode = listOfOperations.item(s);
                 if(operationNode.getNodeType() == Node.ELEMENT_NODE){
-
 
                     Element operationElement = (Element)operationNode;
                     
                     System.out.println("    " + operationElement.getAttribute("name"));
-//
+                    NodeList parametersList = operationElement.getElementsByTagName("wsdl:input");
+                    
+                    for(int j=0; j<parametersList.getLength();j++){
+                    	Node parameterNode = parametersList.item(j);
+                    	if(parameterNode.getNodeType() ==  Node.ELEMENT_NODE){
+                    		Element parameterElement = (Element)parameterNode;
+                    		System.out.println("        " + parameterElement.getAttribute("name"));
+                    	}
+                    }
+                    
 //                    //-------
 //                    NodeList firstNameList = operationElement.getElementsByTagName("first");
 //                    Element firstNameElement = (Element)firstNameList.item(0);
