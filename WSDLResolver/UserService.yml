@@ -1,0 +1,13 @@
+attributes:
+  name: UserServiceBeanService
+  targetNamespace: http://agh.edu.pl/soa
+types:
+  schema:
+    attributes:
+      targetNamespace: http://agh.edu.pl/soa
+    complexType:
+      attributes:
+        name: user
+      sequence:
+        element:
+          
