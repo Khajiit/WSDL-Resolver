@@ -21,6 +21,7 @@ public class WSDLDomParser{
 	private Map<Node,Map<String,Map<String,NodeList>>> operationsMap;
 	private NodeList messagesList;
 	private Map<String, NodeList> complexTypeMap;
+	private Node serviceNode;
 	
 	public WSDLDomParser(String filename) throws ParserConfigurationException, SAXException, IOException {
 
@@ -33,6 +34,7 @@ public class WSDLDomParser{
 		createOperationsMap(operationsList);
 		NodeList complexTypeList = doc.getElementsByTagName("xs:complexType");
 		createComplexTypeMap(complexTypeList);
+		serviceNode = doc.getElementsByTagName("wsdl:service").item(0);
 	}
 
 	private void createComplexTypeMap(NodeList complexTypeList) {
@@ -112,6 +114,16 @@ public class WSDLDomParser{
 
 	public Map<String, NodeList> getComplexTypeMap() {
 		return complexTypeMap;
+	}
+	
+	public String getServiceName() {
+		Element serviceElement = (Element)serviceNode;
+		return serviceElement.getAttribute("name");
+	}
+	
+	public NodeList getPorts() {
+		Element serviceElement = (Element)serviceNode;
+		return serviceElement.getElementsByTagName("wsdl:port");
 	}
 
 }
