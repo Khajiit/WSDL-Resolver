@@ -46,6 +46,11 @@ types:
               - element:
                   attributes:
                     minOccurs: 0
+                    name: password
+                    type: "xs:string"
+              - element:
+                  attributes:
+                    minOccurs: 0
                     name: phone
                     type: "xs:string"
               - element:
