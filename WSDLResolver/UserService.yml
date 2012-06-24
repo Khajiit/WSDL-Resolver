@@ -150,7 +150,7 @@ messageList:
               type: "tns:userArray"
   - message:
       attributes:
-        name: updateUsersResponse
+        name: updateUserResponse
   - message:
       attributes:
         name: getUserByIdResponse
@@ -234,15 +234,15 @@ portType:
             name: getUsersResponse
     - operation:
         attributes:
-          name: updateUsers
+          name: updateUser
         input:
           attributes:
-            message: "tns:updateUsers"
-            name: updateUsers
+            message: "tns:updateUser"
+            name: updateUser
         output:
           attributes:
-            message: "tns:updateUsersResponse"
-            name: updateUsersResponse
+            message: "tns:updateUserResponse"
+            name: updateUserResponse
     - operation:
         attributes:
           name: getUserById
