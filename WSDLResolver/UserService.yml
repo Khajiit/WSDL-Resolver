@@ -1,6 +1,7 @@
 attributes:
   name: UserServiceBeanService
   targetNamespace: http://agh.edu.pl/soa
+  "xmlns:tns": "http://agh.edu.pl/soa"
 types:
   schema:
     attributes:
@@ -10,101 +11,125 @@ types:
           attributes:
             name: user
           sequence:
-            element:
-              minOccurs: 0
-              name: company
-              type: "tns:company"
-            element:
-              minOccurs: 0
-              name: email
-              type: "xs:string"
-            element:
-              minOccurs: 0
-              name: id
-              type: "xs:long"
-            element:
-              minOccurs: 0
-              name: login
-              type: "xs:string"
-            element:
-              minOccurs: 0
-              name: name
-              type: "xs:string"
-            element:
-              minOccurs: 0
-              name: newsletterPermission
-              type: "xs:boolean"
-            element:
-              minOccurs: 0
-              name: phone
-              type: "xs:string"
-            element:
-              minOccurs: 0
-              name: surname
-              type: "xs:boolean"
+            elementList:
+              - element:
+                  attributes:
+                    minOccurs: 0
+                    name: company
+                    type: "tns:company"
+              - element:
+                  attributes:
+                    minOccurs: 0
+                    name: email
+                    type: "xs:string"
+              - element:
+                  attributes:
+                    minOccurs: 0
+                    name: id
+                    type: "xs:long"
+              - element:
+                  attributes:
+                    minOccurs: 0
+                    name: login
+                    type: "xs:string"
+              - element:
+                  attributes:
+                    minOccurs: 0
+                    name: name
+                    type: "xs:string"
+              - element:
+                  attributes:
+                    minOccurs: 0
+                    name: newsletterPermission
+                    type: "xs:boolean"
+              - element:
+                  attributes:
+                    minOccurs: 0
+                    name: phone
+                    type: "xs:string"
+              - element:
+                  attributes:
+                    minOccurs: 0
+                    name: surname
+                    type: "xs:boolean"
       - complexType:
           attributes:
             name: company
           sequence:
-            element:
-              minOccurs: 0
-              name: address
-              type: "tns:address"
-            element:
-              minOccurs: 0
-              name: id
-              type: "xs:long"
-            element:
-              minOccurs: 0
-              name: name
-              type: "xs:string"
-            element:
-              minOccurs: 0
-              name: phone
-              type: "xs:string"
+            elementList:
+              - element:
+                  attributes:
+                    minOccurs: 0
+                    name: address
+                    type: "tns:address"
+              - element:
+                  attributes:
+                    minOccurs: 0
+                    name: id
+                    type: "xs:long"
+              - element:
+                  attributes:
+                    minOccurs: 0
+                    name: name
+                    type: "xs:string"
+              - element:
+                  attributes:
+                    minOccurs: 0
+                    name: phone
+                    type: "xs:string"
       - complexType:
           attributes:
             name: address
           sequence:
-            element:
-              minOccurs: 0
-              name: city
-              type: "xs:string"
-            element:
-              minOccurs: 0
-              name: country
-              type: "xs:string"
-            element:
-              minOccurs: 0
-              name: flatNr
-              type: "xs:int"
-            element:
-              minOccurs: 0
-              name: homeNr
-              type: "xs:int"
-            element:
-              minOccurs: 0
-              name: id
-              type: "xs:long"
-            element:
-              minOccurs: 0
-              name: street
-              type: "xs:string"
-            element:
-              minOccurs: 0
-              name: zipCode
-              type: "xs:string"
+            elementList:
+              - element:
+                  attributes:
+                    minOccurs: 0
+                    name: city
+                    type: "xs:string"
+              - element:
+                  attributes:
+                    minOccurs: 0
+                    name: country
+                    type: "xs:string"
+              - element:
+                  attributes:
+                    minOccurs: 0
+                    name: flatNr
+                    type: "xs:int"
+              - element:
+                  attributes:
+                    minOccurs: 0
+                    name: homeNr
+                    type: "xs:int"
+              - element:
+                  attributes:
+                    minOccurs: 0
+                    name: id
+                    type: "xs:long"
+              - element:
+                  attributes:
+                    minOccurs: 0
+                    name: street
+                    type: "xs:string"
+              - element:
+                  attributes:
+                    minOccurs: 0
+                    name: zipCode
+                    type: "xs:string"
       - complexType:
           attributes:
             final: "#all"
             name: userArray
           sequence:
-            element:
-              maxOccurs: unbounded
-              minOccurs: 0
-              name: item
-              nillable: true
-              type: "tns:user"
+            elementList:
+              - element:
+                  attributes:
+                    maxOccurs: unbounded
+                    minOccurs: 0
+                    name: item
+                    nillable: true
+                    type: "tns:user"
 messageList:
   - message:
       attributes:
