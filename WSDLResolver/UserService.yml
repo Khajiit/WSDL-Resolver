@@ -193,6 +193,9 @@ messageList:
               type: "xsd:long"
   - message:
       attributes:
+        name: registerUserResponse
+  - message:
+      attributes:
         name: updateUser
       partList:
         - part:
@@ -214,9 +217,6 @@ messageList:
             attributes:
               name: UsersListResponse
               type: "tns:userArray"
-  - message:
-      attributes:
-        name: registerUserResponse
 portType:
   attributes:
     name: UserService
@@ -232,17 +232,6 @@ portType:
           attributes:
             message: "tns:getUsersResponse"
             name: getUsersResponse
-    - operation:
-        attributes:
-          name: updateUser
-        input:
-          attributes:
-            message: "tns:updateUser"
-            name: updateUser
-        output:
-          attributes:
-            message: "tns:updateUserResponse"
-            name: updateUserResponse
     - operation:
         attributes:
           name: getUserById
@@ -265,6 +254,17 @@ portType:
           attributes:
             message: "tns:getUsersForCompanyResponse"
             name: getUsersForCompanyResponse
+    - operation:
+        attributes:
+          name: updateUser
+        input:
+          attributes:
+            message: "tns:updateUser"
+            name: updateUser
+        output:
+          attributes:
+            message: "tns:updateUserResponse"
+            name: updateUserResponse
     - operation:
         attributes:
           name: registerUser

@@ -98,7 +98,10 @@ public class WSDLDomParser{
 				System.out.println(nodeName);
 				Node messageNode = getMessageByName(nodeName);
 				Element messageElement = (Element)messageNode;
+				if(nodeName.equals("registerUserResponse"))
+					System.out.println("Tu jestem ");
 				typesList = messageElement.getElementsByTagName(prefix + "part");
+				
 				messageMap.put(messageElement.getAttribute("name"), typesList);
 			}
 		}
