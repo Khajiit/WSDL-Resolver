@@ -17,7 +17,9 @@ public class ParserApp {
 	public static void main(String[] args) {
 		try{
 			WSDLDomParser wsdlParser = new WSDLDomParser("UserService.xml");
+			System.out.println("Service name: " + wsdlParser.getServiceName());
 			System.out.println("The root element is " + wsdlParser.getRootElement());
+			showPorts(wsdlParser.getPorts());
 			Element methodElement;
 			for (Entry<Node, Map<String, Map<String, NodeList>>> entry : wsdlParser.getOperationsMap().entrySet()) {
 				methodElement = (Element)entry.getKey();
@@ -34,7 +36,6 @@ public class ParserApp {
 				System.out.println("Typename: " + typeName);
 				System.out.println("Fields: ");
 				showFields(typeEntry);
-				
 			}
 		}
 		catch (SAXParseException err) {
@@ -50,6 +51,18 @@ public class ParserApp {
 			t.printStackTrace ();
 		}
 
+	}
+
+	private static void showPorts(NodeList portList) {
+		Element portElement;
+		Element addressElement;
+		for(int i=0; i < portList.getLength(); i++){
+			portElement = (Element)portList.item(i);
+			System.out.println("Port name: " + portElement.getAttribute("name") + ", binding: " + portElement.getAttribute("binding"));
+			Node addressNode = portElement.getElementsByTagName("soap:address").item(0);
+			addressElement = (Element)addressNode;
+			System.out.println(createIndent(1) + "Address: " + addressElement.getAttribute("location"));
+		}
 	}
 
 	private static void showFields(Entry<String, NodeList> typeEntry) {
