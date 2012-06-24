@@ -14,6 +14,21 @@ import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 
 public class WSDLBuilder {
+	public static final String OUTPUT = "wsdl:output";
+	public static final String INPUT = "wsdl:input";
+	public static final String OPERATION = "wsdl:operation";
+	private static final String PORT_TYPE = "wsdl:portType";
+	public static final String PART = "wsdl:part";
+	public static final String MESSAGE = "wsdl:message";
+	public static final String ELEMENT = "xs:element";
+	private static final String SEQUENCE = "xs:sequence";
+	public static final String COMPLEX_TYPE = "xs:complexType";
+	public static final String SCHEMA = "xs:schema";
+	public static final String TYPES = "wsdl:types";
+	public static final String DEFINITIONS = "wsdl:definitions";
+	
+	
+	
 	private Document doc;
 	
 	public WSDLBuilder createDocument() throws ParserConfigurationException {
@@ -24,7 +39,7 @@ public class WSDLBuilder {
 	}
 	
 	public WSDLBuilder createRootElement(LinkedHashMap<String, Object> attr) {
-		Element rootElement = doc.createElement("definitions");
+		Element rootElement = doc.createElement(DEFINITIONS);
 		setAttributes(rootElement, attr);
 		rootElement.setAttribute("xmlns:ns1", "http://schemas.xmlsoap.org/soap/http");
 		rootElement.setAttribute("xmlns:soap", "http://schemas.xmlsoap.org/wsdl/soap/");
@@ -35,97 +50,99 @@ public class WSDLBuilder {
 	}
 	
 	public WSDLBuilder createTypesElement(LinkedHashMap<String, Object> attr) {
-		Element types = doc.createElement("types");
+		Element types = doc.createElement(TYPES);
 		if(attr != null)
 			setAttributes(types, attr);
-		doc.getElementsByTagName("definitions").item(0).appendChild(types);
+		doc.getElementsByTagName(DEFINITIONS).item(0).appendChild(types);
 		return this;
 	}
 	
 	public WSDLBuilder createSchemaElement(LinkedHashMap<String, Object> attr) {
-		Element element = doc.createElement("schema");
+		Element element = doc.createElement(SCHEMA);
 		if(attr != null)
 			setAttributes(element, attr);
-		doc.getElementsByTagName("types").item(0).appendChild(element);
+		element.setAttribute("xmlns:xs","http://www.w3.org/2001/XMLSchema");
+		element.setAttribute("version","1.0");
+		doc.getElementsByTagName(TYPES).item(0).appendChild(element);
 		return this;
 	}
 	
 	public WSDLBuilder createComplexTypeElement(LinkedHashMap<String, Object> attr) {
-		Element element = doc.createElement("complexType");
+		Element element = doc.createElement(COMPLEX_TYPE);
 		if(attr != null)
 			setAttributes(element, attr);
-		doc.getElementsByTagName("schema").item(0).appendChild(element);
+		doc.getElementsByTagName(SCHEMA).item(0).appendChild(element);
 		return this;
 	}
 	
 	public WSDLBuilder createSequenceElement(LinkedHashMap<String, Object> attr) {
-		Element element = doc.createElement("sequence");
+		Element element = doc.createElement(SEQUENCE);
 		if(attr != null)
 			setAttributes(element, attr);
-		NodeList nodeList = doc.getElementsByTagName("complexType");
+		NodeList nodeList = doc.getElementsByTagName(COMPLEX_TYPE);
 		nodeList.item(nodeList.getLength()-1).appendChild(element);
 		return this;
 	}
 	
 	public WSDLBuilder createElementElement(LinkedHashMap<String, Object> attr) {
-		Element element = doc.createElement("element");
+		Element element = doc.createElement(ELEMENT);
 		if(attr != null)
 			setAttributes(element, attr);
-		NodeList nodeList = doc.getElementsByTagName("sequence");
+		NodeList nodeList = doc.getElementsByTagName(SEQUENCE);
 		nodeList.item(nodeList.getLength()-1).appendChild(element);
 		return this;
 	}
 	
 	public WSDLBuilder createMessageElement(LinkedHashMap<String, Object> attr) {
-		Element element = doc.createElement("message");
+		Element element = doc.createElement(MESSAGE);
 		if(attr != null)
 			setAttributes(element, attr);
-		NodeList nodeList = doc.getElementsByTagName("definitions");
+		NodeList nodeList = doc.getElementsByTagName(DEFINITIONS);
 		nodeList.item(0).appendChild(element);
 		return this;
 	}
 	
 	public WSDLBuilder createPartElement(LinkedHashMap<String, Object> attr) {
-		Element element = doc.createElement("part");
+		Element element = doc.createElement(PART);
 		if(attr != null)
 			setAttributes(element, attr);
-		NodeList nodeList = doc.getElementsByTagName("message");
+		NodeList nodeList = doc.getElementsByTagName(MESSAGE);
 		nodeList.item(nodeList.getLength()-1).appendChild(element);
 		return this;
 	}
 	
 	public WSDLBuilder createPortTypeElement(LinkedHashMap<String, Object> attr) {
-		Element element = doc.createElement("portType");
+		Element element = doc.createElement(PORT_TYPE);
 		if(attr != null)
 			setAttributes(element, attr);
-		NodeList nodeList = doc.getElementsByTagName("definitions");
+		NodeList nodeList = doc.getElementsByTagName(DEFINITIONS);
 		nodeList.item(0).appendChild(element);
 		return this;
 	}
 	
 	public WSDLBuilder createOperationElement(LinkedHashMap<String, Object> attr) {
-		Element element = doc.createElement("operation");
+		Element element = doc.createElement(OPERATION);
 		if(attr != null)
 			setAttributes(element, attr);
-		NodeList nodeList = doc.getElementsByTagName("portType");
+		NodeList nodeList = doc.getElementsByTagName(PORT_TYPE);
 		nodeList.item(0).appendChild(element);
 		return this;
 	}
 	
 	public WSDLBuilder createInputElement(LinkedHashMap<String, Object> attr) {
-		Element element = doc.createElement("input");
+		Element element = doc.createElement(INPUT);
 		if(attr != null)
 			setAttributes(element, attr);
-		NodeList nodeList = doc.getElementsByTagName("operation");
+		NodeList nodeList = doc.getElementsByTagName(OPERATION);
 		nodeList.item(nodeList.getLength()-1).appendChild(element);
 		return this;
 	}
 	
 	public WSDLBuilder createOutputElement(LinkedHashMap<String, Object> attr) {
-		Element element = doc.createElement("output");
+		Element element = doc.createElement(OUTPUT);
 		if(attr != null)
 			setAttributes(element, attr);
-		NodeList nodeList = doc.getElementsByTagName("operation");
+		NodeList nodeList = doc.getElementsByTagName(OPERATION);
 		nodeList.item(nodeList.getLength()-1).appendChild(element);
 		return this;
 	}
@@ -134,7 +151,7 @@ public class WSDLBuilder {
 		Element element = doc.createElement("wsdl:binding");
 		if(attr != null)
 			setAttributes(element, attr);
-		NodeList nodeList = doc.getElementsByTagName("definitions");
+		NodeList nodeList = doc.getElementsByTagName(DEFINITIONS);
 		nodeList.item(0).appendChild(element);
 		return this;
 	}
@@ -206,7 +223,7 @@ public class WSDLBuilder {
 		Element element = doc.createElement("wsdl:service");
 		if(attr != null)
 			setAttributes(element, attr);
-		NodeList nodeList = doc.getElementsByTagName("definitions");
+		NodeList nodeList = doc.getElementsByTagName(DEFINITIONS);
 		nodeList.item(nodeList.getLength()-1).appendChild(element);
 		return this;
 	}

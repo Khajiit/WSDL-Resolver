@@ -6,6 +6,7 @@ types:
   schema:
     attributes:
       targetNamespace: http://agh.edu.pl/soa
+      "xmlns:tns": "http://agh.edu.pl/soa"
     complexTypeList:     
       - complexType:
           attributes:
