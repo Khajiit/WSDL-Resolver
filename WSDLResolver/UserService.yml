@@ -5,9 +5,383 @@ types:
   schema:
     attributes:
       targetNamespace: http://agh.edu.pl/soa
-    complexType:
+    complexTypeList:     
+      - complexType:
+          attributes:
+            name: user
+          sequence:
+            element:
+              minOccurs: 0
+              name: company
+              type: "tns:company"
+            element:
+              minOccurs: 0
+              name: email
+              type: "xs:string"
+            element:
+              minOccurs: 0
+              name: id
+              type: "xs:long"
+            element:
+              minOccurs: 0
+              name: login
+              type: "xs:string"
+            element:
+              minOccurs: 0
+              name: name
+              type: "xs:string"
+            element:
+              minOccurs: 0
+              name: newsletterPermission
+              type: "xs:boolean"
+            element:
+              minOccurs: 0
+              name: phone
+              type: "xs:string"
+            element:
+              minOccurs: 0
+              name: surname
+              type: "xs:boolean"
+      - complexType:
+          attributes:
+            name: company
+          sequence:
+            element:
+              minOccurs: 0
+              name: address
+              type: "tns:address"
+            element:
+              minOccurs: 0
+              name: id
+              type: "xs:long"
+            element:
+              minOccurs: 0
+              name: name
+              type: "xs:string"
+            element:
+              minOccurs: 0
+              name: phone
+              type: "xs:string"
+      - complexType:
+          attributes:
+            name: address
+          sequence:
+            element:
+              minOccurs: 0
+              name: city
+              type: "xs:string"
+            element:
+              minOccurs: 0
+              name: country
+              type: "xs:string"
+            element:
+              minOccurs: 0
+              name: flatNr
+              type: "xs:int"
+            element:
+              minOccurs: 0
+              name: homeNr
+              type: "xs:int"
+            element:
+              minOccurs: 0
+              name: id
+              type: "xs:long"
+            element:
+              minOccurs: 0
+              name: street
+              type: "xs:string"
+            element:
+              minOccurs: 0
+              name: zipCode
+              type: "xs:string"
+      - complexType:
+          attributes:
+            final: "#all"
+            name: userArray
+          sequence:
+            element:
+              maxOccurs: unbounded
+              minOccurs: 0
+              name: item
+              nillable: true
+              type: "tns:user"
+messageList:
+  - message:
       attributes:
-        name: user
-      sequence:
-        element:
-          
+        name: getNewsletterSubscribersForCompany
+      partList:
+        - part:
+            name: arg0
+            type: "xsd:long"
+  - message:
+      attributes:
+        name: getUsersResponse
+      partList:
+        - part:
+            name: UsersListResponse
+            type: "tns:userArray"
+  - message:
+      attributes:
+        name: updateUsersResponse
+  - message:
+      attributes:
+        name: getUserByIdResponse
+      partList:
+        - part:
+            name: FindUserResponse
+            type: "tns:user"
+  - message:
+      attributes:
+        name: registerUser
+      partList:
+        - part:
+            name: user
+            type: "tns:user"
+  - message:
+      attributes:
+        name: getUsersForCompanyResponse
+      partList:
+        - part:
+            name: UsersListResponse
+            type: "tns:userArray"
+  - message:
+      attributes:
+        name: getUsersForCompany
+      partList:
+        - part:
+            name: arg0
+            type: "xsd:long"
+  - message:
+      attributes:
+        name: getUserById
+      partList:
+        - part:
+            name: id
+            type: "xsd:long"
+  - message:
+      attributes:
+        name: updateUser
+      partList:
+        - part:
+            name: id
+            type: "xsd:long"
+        - part:
+            name: user
+            type: "tns:user"
+  - message:
+      attributes:
+        name: getUsers
+  - message:
+      attributes:
+        name: getNewsletterSubscribersForCompanyResponse
+      partList:
+        - part:
+            name: UsersListResponse
+            type: "tns:userArray"
+  - message:
+      attributes:
+        name: registerUserResponse
+portType:
+  attributes:
+    name: UserService
+  operationList:
+    - operation:
+        attributes:
+          name: getUsers
+        input:
+          message: "tns:getUsers"
+          name: getUsers
+        output:
+          message: "tns:getUsersResponse"
+          name: getUsersResponse
+    - operation:
+        attributes:
+          name: updateUsers
+        input:
+          message: "tns:updateUsers"
+          name: updateUsers
+        output:
+          message: "tns:updateUsersResponse"
+          name: updateUsersResponse
+    - operation:
+        attributes:
+          name: getUserById
+        input:
+          message: "tns:getUserById"
+          name: getUserById
+        output:
+          message: "tns:getUserByIdResponse"
+          name: getUserByIdResponse
+    - operation:
+        attributes:
+          name: getUsersForCompany
+        input:
+          message: "tns:getUsersForCompany"
+          name: getUsersForCompany
+        output:
+          message: "tns:getUsersForCompanyResponse"
+          name: getUsersForCompanyResponse
+    - operation:
+        attributes:
+          name: registerUser
+        input:
+          message: "tns:registerUser"
+          name: registerUser
+        output:
+          message: "tns:registerUserResponse"
+          name: registerUserResponse
+    - operation:
+        attributes:
+          name: getNewsletterSubscribersForCompany
+        input:
+          message: "tns:getNewsletterSubscribersForCompany"
+          name: getNewsletterSubscribersForCompany
+        output:
+          message: "tns:getNewsletterSubscribersForCompanyResponse"
+          name: getNewsletterSubscribersForCompanyResponse
+binding:
+  attributes:
+    name: UserServiceBeanServiceSoapBinding
+    type: "tns:UserService"
+  binding:
+    attributes:
+      style: rpc
+      transport: "http://schemas.xmlsoap.org/soap/http"
+  operationList:
+    - operation:
+        attributes:
+          name: getUsers
+        operation:
+          attributes:
+            soapAction:
+            style: rpc
+        input:
+          attributes:
+          name: getUsers
+          body:
+            attributes:
+              namespace: "http://agh.edu.pl/soa"
+              use: literal
+        output:
+          attributes:
+          name: getUsersResponse
+          body:
+            attributes:
+              namespace: "http://agh.edu.pl/soa"
+              use: literal
+    - operation:
+        attributes:
+          name: updateUser
+        operation:
+          attributes:
+            soapAction:
+            style: rpc
+        input:
+          attributes:
+          name: updateUser
+          body:
+            attributes:
+              namespace: "http://agh.edu.pl/soa"
+              use: literal
+        output:
+          attributes:
+          name: updateUserResponse
+          body:
+            attributes:
+              namespace: "http://agh.edu.pl/soa"
+              use: literal
+    - operation:
+        attributes:
+          name: getUserById
+        operation:
+          attributes:
+            soapAction:
+            style: rpc
+        input:
+          attributes:
+          name: getUserById
+          body:
+            attributes:
+              namespace: "http://agh.edu.pl/soa"
+              use: literal
+        output:
+          attributes:
+          name: getUserByIdResponse
+          body:
+            attributes:
+              namespace: "http://agh.edu.pl/soa"
+              use: literal
+    - operation:
+        attributes:
+          name: getUsersForCompany
+        operation:
+          attributes:
+            soapAction:
+            style: rpc
+        input:
+          attributes:
+          name: getUsersForCompany
+          body:
+            attributes:
+              namespace: "http://agh.edu.pl/soa"
+              use: literal
+        output:
+          attributes:
+          name: getUsersForCompanyResponse
+          body:
+            attributes:
+              namespace: "http://agh.edu.pl/soa"
+              use: literal
+    - operation:
+        attributes:
+          name: registerUser
+        operation:
+          attributes:
+            soapAction:
+            style: rpc
+        input:
+          attributes:
+          name: registerUser
+          body:
+            attributes:
+              namespace: "http://agh.edu.pl/soa"
+              use: literal
+        output:
+          attributes:
+          name: registerUserResponse
+          body:
+            attributes:
+              namespace: "http://agh.edu.pl/soa"
+              use: literal
+    - operation:
+        attributes:
+          name: getNewsletterSubscribersForCompany
+        operation:
+          attributes:
+            soapAction:
+            style: rpc
+        input:
+          attributes:
+          name: getNewsletterSubscribersForCompany
+          body:
+            attributes:
+              namespace: "http://agh.edu.pl/soa"
+              use: literal
+        output:
+          attributes:
+          name: getNewsletterSubscribersForCompanyResponse
+          body:
+            attributes:
+              namespace: "http://agh.edu.pl/soa"
+              use: literal
+service:
+  attributes:
+    name: UserServiceBeanService
+  port:
+    attributes:
+      binding: "tns:UserServiceBeanServiceSoapBinding"
+      name: UserServicePort
+    address:
+      attributes:
+        location: "http://localhost:8080/ReservationBeans/UserService"
+              
