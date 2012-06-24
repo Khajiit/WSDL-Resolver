@@ -76,10 +76,167 @@ public class WSDLBuilder {
 		return this;
 	}
 	
+	public WSDLBuilder createMessageElement(LinkedHashMap<String, Object> attr) {
+		Element element = doc.createElement("message");
+		if(attr != null)
+			setAttributes(element, attr);
+		NodeList nodeList = doc.getElementsByTagName("definitions");
+		nodeList.item(0).appendChild(element);
+		return this;
+	}
+	
+	public WSDLBuilder createPartElement(LinkedHashMap<String, Object> attr) {
+		Element element = doc.createElement("part");
+		if(attr != null)
+			setAttributes(element, attr);
+		NodeList nodeList = doc.getElementsByTagName("message");
+		nodeList.item(nodeList.getLength()-1).appendChild(element);
+		return this;
+	}
+	
+	public WSDLBuilder createPortTypeElement(LinkedHashMap<String, Object> attr) {
+		Element element = doc.createElement("portType");
+		if(attr != null)
+			setAttributes(element, attr);
+		NodeList nodeList = doc.getElementsByTagName("definitions");
+		nodeList.item(0).appendChild(element);
+		return this;
+	}
+	
+	public WSDLBuilder createOperationElement(LinkedHashMap<String, Object> attr) {
+		Element element = doc.createElement("operation");
+		if(attr != null)
+			setAttributes(element, attr);
+		NodeList nodeList = doc.getElementsByTagName("portType");
+		nodeList.item(0).appendChild(element);
+		return this;
+	}
+	
+	public WSDLBuilder createInputElement(LinkedHashMap<String, Object> attr) {
+		Element element = doc.createElement("input");
+		if(attr != null)
+			setAttributes(element, attr);
+		NodeList nodeList = doc.getElementsByTagName("operation");
+		nodeList.item(nodeList.getLength()-1).appendChild(element);
+		return this;
+	}
+	
+	public WSDLBuilder createOutputElement(LinkedHashMap<String, Object> attr) {
+		Element element = doc.createElement("output");
+		if(attr != null)
+			setAttributes(element, attr);
+		NodeList nodeList = doc.getElementsByTagName("operation");
+		nodeList.item(nodeList.getLength()-1).appendChild(element);
+		return this;
+	}
+	
+	public WSDLBuilder createBindingElement(LinkedHashMap<String, Object> attr) {
+		Element element = doc.createElement("wsdl:binding");
+		if(attr != null)
+			setAttributes(element, attr);
+		NodeList nodeList = doc.getElementsByTagName("definitions");
+		nodeList.item(0).appendChild(element);
+		return this;
+	}
+	
+	public WSDLBuilder createInsideBindingElement(LinkedHashMap<String, Object> attr) {
+		Element element = doc.createElement("soap:binding");
+		if(attr != null)
+			setAttributes(element, attr);
+		NodeList nodeList = doc.getElementsByTagName("wsdl:binding");
+		nodeList.item(0).appendChild(element);
+		return this;
+	}
+	
+	public WSDLBuilder createBindingOperationElement(LinkedHashMap<String, Object> attr) {
+		Element element = doc.createElement("wsdl:operation");
+		if(attr != null)
+			setAttributes(element, attr);
+		NodeList nodeList = doc.getElementsByTagName("wsdl:binding");
+		nodeList.item(0).appendChild(element);
+		return this;
+	}
+	
+	public WSDLBuilder createInsideBindingOperationElement(LinkedHashMap<String, Object> attr) {
+		Element element = doc.createElement("soap:operation");
+		if(attr != null)
+			setAttributes(element, attr);
+		NodeList nodeList = doc.getElementsByTagName("wsdl:operation");
+		nodeList.item(nodeList.getLength()-1).appendChild(element);
+		return this;
+	}
+	
+	public WSDLBuilder createInsideInputElement(LinkedHashMap<String, Object> attr) {
+		Element element = doc.createElement("wsdl:input");
+		if(attr != null)
+			setAttributes(element, attr);
+		NodeList nodeList = doc.getElementsByTagName("wsdl:operation");
+		nodeList.item(nodeList.getLength()-1).appendChild(element);
+		return this;
+	}
+	
+	public WSDLBuilder createInsideInputBodyElement(LinkedHashMap<String, Object> attr) {
+		Element element = doc.createElement("soap:body");
+		if(attr != null)
+			setAttributes(element, attr);
+		NodeList nodeList = doc.getElementsByTagName("wsdl:input");
+		nodeList.item(nodeList.getLength()-1).appendChild(element);
+		return this;
+	}
+	
+	public WSDLBuilder createInsideOutputElement(LinkedHashMap<String, Object> attr) {
+		Element element = doc.createElement("wsdl:output");
+		if(attr != null)
+			setAttributes(element, attr);
+		NodeList nodeList = doc.getElementsByTagName("wsdl:operation");
+		nodeList.item(nodeList.getLength()-1).appendChild(element);
+		return this;
+	}
+	
+	public WSDLBuilder createInsideOutputBodyElement(LinkedHashMap<String, Object> attr) {
+		Element element = doc.createElement("soap:body");
+		if(attr != null)
+			setAttributes(element, attr);
+		NodeList nodeList = doc.getElementsByTagName("wsdl:output");
+		nodeList.item(nodeList.getLength()-1).appendChild(element);
+		return this;
+	}
+	
+	public WSDLBuilder createServiceElement(LinkedHashMap<String, Object> attr) {
+		Element element = doc.createElement("wsdl:service");
+		if(attr != null)
+			setAttributes(element, attr);
+		NodeList nodeList = doc.getElementsByTagName("definitions");
+		nodeList.item(nodeList.getLength()-1).appendChild(element);
+		return this;
+	}
+	
+	public WSDLBuilder createPortElement(LinkedHashMap<String, Object> attr) {
+		Element element = doc.createElement("wsdl:port");
+		if(attr != null)
+			setAttributes(element, attr);
+		NodeList nodeList = doc.getElementsByTagName("wsdl:service");
+		nodeList.item(nodeList.getLength()-1).appendChild(element);
+		return this;
+	}
+	
+	public WSDLBuilder createAddressElement(LinkedHashMap<String, Object> attr) {
+		Element element = doc.createElement("soap:address");
+		if(attr != null)
+			setAttributes(element, attr);
+		NodeList nodeList = doc.getElementsByTagName("wsdl:port");
+		nodeList.item(nodeList.getLength()-1).appendChild(element);
+		return this;
+	}
+	
 	public void setAttributes(Element el, LinkedHashMap<String, Object> attr) {
 		Set<String> s = attr.keySet();
 		for(String at : s) {
-			el.setAttribute(at, attr.get(at).toString());
+			try {
+				el.setAttribute(at, attr.get(at).toString());
+			} catch (NullPointerException e) {
+				el.setAttribute(at, "null");
+			}
 		}
 	}
 	

@@ -136,15 +136,17 @@ messageList:
         name: getNewsletterSubscribersForCompany
       partList:
         - part:
-            name: arg0
-            type: "xsd:long"
+            attributes:
+              name: arg0
+              type: "xsd:long"
   - message:
       attributes:
         name: getUsersResponse
       partList:
         - part:
-            name: UsersListResponse
-            type: "tns:userArray"
+            attributes:
+              name: UsersListResponse
+              type: "tns:userArray"
   - message:
       attributes:
         name: updateUsersResponse
@@ -153,46 +155,53 @@ messageList:
         name: getUserByIdResponse
       partList:
         - part:
-            name: FindUserResponse
-            type: "tns:user"
+            attributes:
+              name: FindUserResponse
+              type: "tns:user"
   - message:
       attributes:
         name: registerUser
       partList:
         - part:
-            name: user
-            type: "tns:user"
+            attributes:
+              name: user
+              type: "tns:user"
   - message:
       attributes:
         name: getUsersForCompanyResponse
       partList:
         - part:
-            name: UsersListResponse
-            type: "tns:userArray"
+            attributes:
+              name: UsersListResponse
+              type: "tns:userArray"
   - message:
       attributes:
         name: getUsersForCompany
       partList:
         - part:
-            name: arg0
-            type: "xsd:long"
+            attributes:
+              name: arg0
+              type: "xsd:long"
   - message:
       attributes:
         name: getUserById
       partList:
         - part:
-            name: id
-            type: "xsd:long"
+            attributes:
+              name: id
+              type: "xsd:long"
   - message:
       attributes:
         name: updateUser
       partList:
         - part:
-            name: id
-            type: "xsd:long"
+            attributes:
+              name: id
+              type: "xsd:long"
         - part:
-            name: user
-            type: "tns:user"
+            attributes:
+              name: user
+              type: "tns:user"
   - message:
       attributes:
         name: getUsers
@@ -201,8 +210,9 @@ messageList:
         name: getNewsletterSubscribersForCompanyResponse
       partList:
         - part:
-            name: UsersListResponse
-            type: "tns:userArray"
+            attributes:
+              name: UsersListResponse
+              type: "tns:userArray"
   - message:
       attributes:
         name: registerUserResponse
@@ -214,56 +224,68 @@ portType:
         attributes:
           name: getUsers
         input:
-          message: "tns:getUsers"
-          name: getUsers
+          attributes:
+            message: "tns:getUsers"
+            name: getUsers
         output:
-          message: "tns:getUsersResponse"
-          name: getUsersResponse
+          attributes:
+            message: "tns:getUsersResponse"
+            name: getUsersResponse
     - operation:
         attributes:
           name: updateUsers
         input:
-          message: "tns:updateUsers"
-          name: updateUsers
+          attributes:
+            message: "tns:updateUsers"
+            name: updateUsers
         output:
-          message: "tns:updateUsersResponse"
-          name: updateUsersResponse
+          attributes:
+            message: "tns:updateUsersResponse"
+            name: updateUsersResponse
     - operation:
         attributes:
           name: getUserById
         input:
-          message: "tns:getUserById"
-          name: getUserById
+          attributes:
+            message: "tns:getUserById"
+            name: getUserById
         output:
-          message: "tns:getUserByIdResponse"
-          name: getUserByIdResponse
+          attributes:
+            message: "tns:getUserByIdResponse"
+            name: getUserByIdResponse
     - operation:
         attributes:
           name: getUsersForCompany
         input:
-          message: "tns:getUsersForCompany"
-          name: getUsersForCompany
+          attributes:
+            message: "tns:getUsersForCompany"
+            name: getUsersForCompany
         output:
-          message: "tns:getUsersForCompanyResponse"
-          name: getUsersForCompanyResponse
+          attributes:
+            message: "tns:getUsersForCompanyResponse"
+            name: getUsersForCompanyResponse
     - operation:
         attributes:
           name: registerUser
         input:
-          message: "tns:registerUser"
-          name: registerUser
+          attributes:
+            message: "tns:registerUser"
+            name: registerUser
         output:
-          message: "tns:registerUserResponse"
-          name: registerUserResponse
+          attributes:
+            message: "tns:registerUserResponse"
+            name: registerUserResponse
     - operation:
         attributes:
           name: getNewsletterSubscribersForCompany
         input:
-          message: "tns:getNewsletterSubscribersForCompany"
-          name: getNewsletterSubscribersForCompany
+          attributes:
+            message: "tns:getNewsletterSubscribersForCompany"
+            name: getNewsletterSubscribersForCompany
         output:
-          message: "tns:getNewsletterSubscribersForCompanyResponse"
-          name: getNewsletterSubscribersForCompanyResponse
+          attributes:
+            message: "tns:getNewsletterSubscribersForCompanyResponse"
+            name: getNewsletterSubscribersForCompanyResponse
 binding:
   attributes:
     name: UserServiceBeanServiceSoapBinding
@@ -282,7 +304,7 @@ binding:
             style: rpc
         input:
           attributes:
-            - name: getUsers
+            name: getUsers
           body:
             attributes:
               namespace: "http://agh.edu.pl/soa"
@@ -373,7 +395,7 @@ binding:
               use: literal
         output:
           attributes:
-          name: registerUserResponse
+            name: registerUserResponse
           body:
             attributes:
               namespace: "http://agh.edu.pl/soa"
@@ -394,7 +416,7 @@ binding:
               use: literal
         output:
           attributes:
-          name: getNewsletterSubscribersForCompanyResponse
+            name: getNewsletterSubscribersForCompanyResponse
           body:
             attributes:
               namespace: "http://agh.edu.pl/soa"
