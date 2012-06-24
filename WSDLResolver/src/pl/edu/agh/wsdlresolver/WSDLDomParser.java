@@ -30,7 +30,13 @@ public class WSDLDomParser{
 		DocumentBuilderFactory docBuilderFactory = DocumentBuilderFactory.newInstance();
 		DocumentBuilder docBuilder = docBuilderFactory.newDocumentBuilder();
 		if(location.contains("http")){
-			doc = docBuilder.parse(location);			
+			try{
+				doc = docBuilder.parse(location);
+			} catch (IOException e) {
+				System.out.println("Cannot read WSDL from given url. Application will terminate.");
+				System.exit(0);
+			}
+			
 		}
 		else {
 			doc = docBuilder.parse (new File(location));

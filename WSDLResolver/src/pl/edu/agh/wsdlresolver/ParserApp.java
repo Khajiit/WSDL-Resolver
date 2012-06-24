@@ -26,8 +26,6 @@ public class ParserApp {
 		}
 		try{
 			WSDLDomParser wsdlParser = new WSDLDomParser(args[0]);
-//			WSDLDomParser wsdlParser = new WSDLDomParser("UserService.xml");
-//			WSDLDomParser wsdlParser = new WSDLDomParser("http://localhost:8080/ReservationBeans/TestService?wsdl");
 			System.out.println("Service name: " + wsdlParser.getServiceName());
 			System.out.println("The root element is " + wsdlParser.getRootElement());
 			showPorts(wsdlParser.getPorts());
