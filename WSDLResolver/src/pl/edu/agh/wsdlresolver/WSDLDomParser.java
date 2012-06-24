@@ -22,19 +22,31 @@ public class WSDLDomParser{
 	private NodeList messagesList;
 	private Map<String, NodeList> complexTypeMap;
 	private Node serviceNode;
+	private String rootNodeName;
+	private String prefix = new String();
 	
-	public WSDLDomParser(String filename) throws ParserConfigurationException, SAXException, IOException {
+	public WSDLDomParser(String location) throws ParserConfigurationException, SAXException, IOException {
 
 		DocumentBuilderFactory docBuilderFactory = DocumentBuilderFactory.newInstance();
 		DocumentBuilder docBuilder = docBuilderFactory.newDocumentBuilder();
-		doc = docBuilder.parse (new File(filename));
+		if(location.contains("http")){
+			doc = docBuilder.parse(location);			
+		}
+		else {
+			doc = docBuilder.parse (new File(location));
+		}
+		
 		doc.getDocumentElement ().normalize ();
-		NodeList operationsList = doc.getElementsByTagName("wsdl:operation");
-		messagesList = doc.getElementsByTagName("wsdl:message");
+		rootNodeName = doc.getDocumentElement().getNodeName();
+		if(rootNodeName.contains("wsdl:")){
+			prefix = "wsdl:";
+		}
+		NodeList operationsList = doc.getElementsByTagName(prefix + "operation");
+		messagesList = doc.getElementsByTagName(prefix + "message");
 		createOperationsMap(operationsList);
 		NodeList complexTypeList = doc.getElementsByTagName("xs:complexType");
 		createComplexTypeMap(complexTypeList);
-		serviceNode = doc.getElementsByTagName("wsdl:service").item(0);
+		serviceNode = doc.getElementsByTagName(prefix + "service").item(0);
 	}
 
 	private void createComplexTypeMap(NodeList complexTypeList) {
@@ -56,8 +68,8 @@ public class WSDLDomParser{
 			Node operationNode = operationsList.item(s);
 			if(operationNode.getNodeType() == Node.ELEMENT_NODE){
 				Element operationElement = (Element)operationNode;
-				Map<String, NodeList> inParametersMap = resolveParameters(operationElement, "wsdl:input");
-				Map<String, NodeList> outParametersMap = resolveParameters(operationElement, "wsdl:output");
+				Map<String, NodeList> inParametersMap = resolveParameters(operationElement, prefix + "input");
+				Map<String, NodeList> outParametersMap = resolveParameters(operationElement, prefix + "output");
 				allParamsMap = new HashMap<String, Map<String, NodeList>>();
 				allParamsMap.put("input", inParametersMap);
 				allParamsMap.put("output", outParametersMap);
@@ -79,7 +91,7 @@ public class WSDLDomParser{
 				String nodeName = parameterElement.getAttribute("name");
 				Node messageNode = getMessageByName(nodeName);
 				Element messageElement = (Element)messageNode;
-				typesList = messageElement.getElementsByTagName("wsdl:part");
+				typesList = messageElement.getElementsByTagName(prefix + "part");
 				messageMap.put(messageElement.getAttribute("name"), typesList);
 			}
 		}
@@ -105,7 +117,7 @@ public class WSDLDomParser{
 //	}
 
 	public String getRootElement() {
-		return doc.getDocumentElement().getNodeName();
+		return rootNodeName;
 	}
 
 	public Map<Node, Map<String, Map<String, NodeList>>> getOperationsMap() {
@@ -123,7 +135,7 @@ public class WSDLDomParser{
 	
 	public NodeList getPorts() {
 		Element serviceElement = (Element)serviceNode;
-		return serviceElement.getElementsByTagName("wsdl:port");
+		return serviceElement.getElementsByTagName(prefix + "port");
 	}
 
 }
