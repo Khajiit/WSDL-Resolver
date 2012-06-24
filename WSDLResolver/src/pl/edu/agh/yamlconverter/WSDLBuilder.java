@@ -72,7 +72,7 @@ public class WSDLBuilder {
 		if(attr != null)
 			setAttributes(element, attr);
 		NodeList nodeList = doc.getElementsByTagName("sequence");
-		nodeList.item(0).appendChild(element);
+		nodeList.item(nodeList.getLength()-1).appendChild(element);
 		return this;
 	}
 	
