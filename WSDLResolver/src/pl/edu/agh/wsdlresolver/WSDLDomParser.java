@@ -24,7 +24,7 @@ public class WSDLDomParser{
 	private Node serviceNode;
 	private String rootNodeName;
 	private String prefix = new String();
-	
+	//http://localhost:8080/ReservationBeans/UserService?wsdl
 	public WSDLDomParser(String location) throws ParserConfigurationException, SAXException, IOException {
 
 		DocumentBuilderFactory docBuilderFactory = DocumentBuilderFactory.newInstance();
@@ -95,9 +95,13 @@ public class WSDLDomParser{
 			if(parameterNode.getNodeType() ==  Node.ELEMENT_NODE){
 				Element parameterElement = (Element)parameterNode;
 				String nodeName = parameterElement.getAttribute("name");
+				System.out.println(nodeName);
 				Node messageNode = getMessageByName(nodeName);
 				Element messageElement = (Element)messageNode;
+				if(nodeName.equals("registerUserResponse"))
+					System.out.println("Tu jestem ");
 				typesList = messageElement.getElementsByTagName(prefix + "part");
+				
 				messageMap.put(messageElement.getAttribute("name"), typesList);
 			}
 		}
