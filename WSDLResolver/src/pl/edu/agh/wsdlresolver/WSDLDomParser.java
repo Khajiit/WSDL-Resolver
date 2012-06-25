@@ -47,7 +47,9 @@ public class WSDLDomParser{
 		if(rootNodeName.contains("wsdl:")){
 			prefix = "wsdl:";
 		}
-		NodeList operationsList = doc.getElementsByTagName(prefix + "operation");
+		Node portTypeNode = doc.getElementsByTagName(prefix + "portType").item(0);
+		Element portTypeElement = (Element)portTypeNode;
+		NodeList operationsList = portTypeElement.getElementsByTagName(prefix + "operation");
 		messagesList = doc.getElementsByTagName(prefix + "message");
 		createOperationsMap(operationsList);
 		NodeList complexTypeList = doc.getElementsByTagName("xs:complexType");
@@ -95,11 +97,8 @@ public class WSDLDomParser{
 			if(parameterNode.getNodeType() ==  Node.ELEMENT_NODE){
 				Element parameterElement = (Element)parameterNode;
 				String nodeName = parameterElement.getAttribute("name");
-				System.out.println(nodeName);
 				Node messageNode = getMessageByName(nodeName);
 				Element messageElement = (Element)messageNode;
-				if(nodeName.equals("registerUserResponse"))
-					System.out.println("Tu jestem ");
 				typesList = messageElement.getElementsByTagName(prefix + "part");
 				
 				messageMap.put(messageElement.getAttribute("name"), typesList);
