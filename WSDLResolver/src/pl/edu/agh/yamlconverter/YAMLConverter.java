@@ -31,20 +31,37 @@ public class YAMLConverter {
 	 */
 	public static void main(String[] args) throws FileNotFoundException, ParserConfigurationException, TransformerException {
 		// TODO Auto-generated method stub
-		InputStream io = new FileInputStream("UserService.yml");
-		Yaml yaml = new Yaml();
-		Object obj = yaml.load(io);
-		LinkedHashMap<String, Object> map = (LinkedHashMap<String, Object>) obj;
-		System.out.println(map);
+//		InputStream io = new FileInputStream("UserService.yml");
+//		Yaml yaml = new Yaml();
+//		Object obj = yaml.load(io);
+//		LinkedHashMap<String, Object> map = (LinkedHashMap<String, Object>) obj;
+//		System.out.println(map);
 		
+		if(args.length < 2) {
+			System.out.println("Niewystarczaj¹ca ilosc parametrow. Poprawne wywo³anie:");
+			System.out.println("java YAMLConverter [src.yml] [dest.xml]");
+			return;
+		}
+		String srcFilePath = args[0];
+		String destFilePath = args[1];
+		
+		System.out.println("Rozpoczynam konwersjê");
 		YAMLConverter yamlConverter = new YAMLConverter();
 		TransformerFactory transformerFactory = TransformerFactory.newInstance();
 		Transformer transformer = transformerFactory.newTransformer();
-		DOMSource source = new DOMSource(yamlConverter.parse("UserService.yml"));
-		StreamResult result = new StreamResult(new File("result.xml"));
+		DOMSource source;
+		try {
+			source = new DOMSource(yamlConverter.parse(srcFilePath));
+		} catch (Exception e) {
+			System.out.println("Konwersja zakonczona niepowodzeniem!");
+			System.out.println("Blad: " + e.getMessage());
+			return;
+		}
+		StreamResult result = new StreamResult(new File(destFilePath));
 		StreamResult resultConsole = new StreamResult(System.out);
 		transformer.transform(source, result);
-		transformer.transform(source, resultConsole);
+//		transformer.transform(source, resultConsole);
+		System.out.println("Konwersja zakonczona pomyslnie!");
 	}
 	
 	/**
@@ -131,8 +148,8 @@ public class YAMLConverter {
 		Yaml yaml = new Yaml();
 		Object obj = yaml.load(io);
 		LinkedHashMap<String, Object> map = (LinkedHashMap<String, Object>) obj;
-		System.out.println("Loaded hashmap:");
-		System.out.println(map);
+//		System.out.println("Loaded hashmap:");
+//		System.out.println(map);
 		return map;
 	}
 
