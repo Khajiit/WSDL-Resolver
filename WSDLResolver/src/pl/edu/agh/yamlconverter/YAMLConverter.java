@@ -1,6 +1,7 @@
 package pl.edu.agh.yamlconverter;
 
 import java.io.BufferedWriter;
+import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -10,6 +11,7 @@ import java.io.InputStream;
 import java.io.StringReader;
 import java.io.StringWriter;
 import java.io.ObjectInputStream.GetField;
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -54,7 +56,7 @@ public class YAMLConverter {
 
 		String s = "";
 		try {
-			s = getStringFromDocument(yamlConverter.parse(srcFilePath));
+			s = getStringFromDocument(yamlConverter.parse(srcFilePath, true));
 		} catch (Exception e) {
 			System.out.println("Konwersja zakonczona niepowodzeniem!");
 			System.out.println("Blad: " + e.getMessage());
@@ -79,9 +81,13 @@ public class YAMLConverter {
 	 * @param path
 	 * @throws FileNotFoundException 
 	 */
-	public Document parse(String path) throws ParserConfigurationException, FileNotFoundException {
+	public Document parse(String path, boolean fromFile) throws ParserConfigurationException, FileNotFoundException {
 		WSDLBuilder builder = new WSDLBuilder();
-		LinkedHashMap<String, Object> map = (LinkedHashMap<String, Object>) loadYaml(path);
+		LinkedHashMap<String, Object> map;
+		if(fromFile)
+			map = (LinkedHashMap<String, Object>) loadYaml(path);
+		else
+			map = (LinkedHashMap<String, Object>) loadYamlFromString(path);
 		
 		//stworzenie g³ównego elementu
 		builder.createDocument().createRootElement((LinkedHashMap<String, Object>) map.get("attributes"));
@@ -154,6 +160,20 @@ public class YAMLConverter {
 		return doc;
 	}
 	
+	private LinkedHashMap<String, Object> loadYamlFromString(String path) {
+		InputStream io = null;
+		try {
+            io = new ByteArrayInputStream(path.getBytes("UTF-8"));
+        } catch (UnsupportedEncodingException e) {
+            System.out.println("B³¹d wczytywania pliku");
+            System.exit(0);
+        }
+		Yaml yaml = new Yaml();
+		Object obj = yaml.load(io);
+		LinkedHashMap<String, Object> map = (LinkedHashMap<String, Object>) obj;
+		return map;
+	}
+
 	public Map loadYaml(String path) throws FileNotFoundException {
 		InputStream io = new FileInputStream(path);
 		Yaml yaml = new Yaml();
