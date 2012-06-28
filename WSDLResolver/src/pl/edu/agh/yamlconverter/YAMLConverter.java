@@ -1,9 +1,15 @@
 package pl.edu.agh.yamlconverter;
 
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.io.InputStream;
+import java.io.StringReader;
+import java.io.StringWriter;
+import java.io.ObjectInputStream.GetField;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -11,18 +17,23 @@ import java.util.Map;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.OutputKeys;
+import javax.xml.transform.Source;
 import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerConfigurationException;
 import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
+import javax.xml.transform.stream.StreamSource;
 
 import org.w3c.dom.Document;
 import org.yaml.snakeyaml.Yaml;
 
 public class YAMLConverter {
 
+	private Document doc;
+	
 	/**
 	 * @param args
 	 * @throws FileNotFoundException 
@@ -30,13 +41,6 @@ public class YAMLConverter {
 	 * @throws TransformerException 
 	 */
 	public static void main(String[] args) throws FileNotFoundException, ParserConfigurationException, TransformerException {
-		// TODO Auto-generated method stub
-//		InputStream io = new FileInputStream("UserService.yml");
-//		Yaml yaml = new Yaml();
-//		Object obj = yaml.load(io);
-//		LinkedHashMap<String, Object> map = (LinkedHashMap<String, Object>) obj;
-//		System.out.println(map);
-		
 		if(args.length < 2) {
 			System.out.println("Niewystarczaj¹ca ilosc parametrow. Poprawne wywo³anie:");
 			System.out.println("java YAMLConverter [src.yml] [dest.xml]");
@@ -45,22 +49,28 @@ public class YAMLConverter {
 		String srcFilePath = args[0];
 		String destFilePath = args[1];
 		
-		System.out.println("Rozpoczynam konwersjê");
+		System.out.println("Rozpoczynam konwersjê pliku " + srcFilePath);
 		YAMLConverter yamlConverter = new YAMLConverter();
-		TransformerFactory transformerFactory = TransformerFactory.newInstance();
-		Transformer transformer = transformerFactory.newTransformer();
-		DOMSource source;
+
+		String s = "";
 		try {
-			source = new DOMSource(yamlConverter.parse(srcFilePath));
+			s = getStringFromDocument(yamlConverter.parse(srcFilePath));
 		} catch (Exception e) {
 			System.out.println("Konwersja zakonczona niepowodzeniem!");
 			System.out.println("Blad: " + e.getMessage());
 			return;
 		}
-		StreamResult result = new StreamResult(new File(destFilePath));
-		StreamResult resultConsole = new StreamResult(System.out);
-		transformer.transform(source, result);
-//		transformer.transform(source, resultConsole);
+		String result = prettyFormat(s, 2);
+		try {
+		    BufferedWriter out = new BufferedWriter(new FileWriter(destFilePath));
+		    out.write(result);
+		    out.close();
+		} catch (IOException e) {
+			System.out.println("Problem z zapisem wyniku do pliku! Wynik:");
+			System.out.println(result);
+			return;
+		}
+
 		System.out.println("Konwersja zakonczona pomyslnie!");
 	}
 	
@@ -140,7 +150,8 @@ public class YAMLConverter {
 		builder.createServiceElement((LinkedHashMap<String, Object>) serviceMap.get("attributes"));	
 		builder.createPortElement((LinkedHashMap<String, Object>) portMap.get("attributes"));
 		builder.createAddressElement((LinkedHashMap<String, Object>) ((LinkedHashMap<String, Object>) portMap.get("address")).get("attributes"));
-		return builder.getDocument();
+		doc = builder.getDocument();
+		return doc;
 	}
 	
 	public Map loadYaml(String path) throws FileNotFoundException {
@@ -151,6 +162,58 @@ public class YAMLConverter {
 //		System.out.println("Loaded hashmap:");
 //		System.out.println(map);
 		return map;
+	}
+	
+	public static String getStringFromDocument(Document doc)
+	{
+	    try
+	    {
+	       DOMSource domSource = new DOMSource(doc);
+	       StringWriter writer = new StringWriter();
+	       StreamResult result = new StreamResult(writer);
+	       TransformerFactory tf = TransformerFactory.newInstance();
+	       Transformer transformer = tf.newTransformer();
+	       transformer.transform(domSource, result);
+	       return writer.toString();
+	    }
+	    catch(TransformerException ex)
+	    {
+	       ex.printStackTrace();
+	       return null;
+	    }
+	} 
+	
+	public static String prettyFormat(String input, int indent) {
+	    try {
+	        Source xmlInput = new StreamSource(new StringReader(input));
+	        StringWriter stringWriter = new StringWriter();
+	        StreamResult xmlOutput = new StreamResult(stringWriter);
+	        TransformerFactory transformerFactory = TransformerFactory.newInstance();
+	        transformerFactory.setAttribute("indent-number", indent);
+	        Transformer transformer = transformerFactory.newTransformer(); 
+	        transformer.setOutputProperty(OutputKeys.INDENT, "yes");
+	        transformer.transform(xmlInput, xmlOutput);
+	        return xmlOutput.getWriter().toString();
+	    } catch (Exception e) {
+	        throw new RuntimeException(e);
+	    }
+	}
+
+	public String getString() {
+		return prettyFormat(getStringFromDocument(doc),2);
+	}
+	
+	public void writeToFile(String destFilePath) {
+		String result = prettyFormat(getStringFromDocument(doc),2);
+		try {
+		    BufferedWriter out = new BufferedWriter(new FileWriter(destFilePath));
+		    out.write(result);
+		    out.close();
+		} catch (IOException e) {
+			System.out.println("Problem z zapisem wyniku do pliku! Wynik:");
+			System.out.println(result);
+			return;
+		}
 	}
 
 }
